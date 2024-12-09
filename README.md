@@ -59,7 +59,15 @@ git clone TODO
 Create a virtual environment and install all the dependencies:
 
 ```bash
-py -m venv venv
-venv\Scripts\activate
+py -m venv .venv
+.venv\Scripts\activate
 pip install -r requirements.txt
+```
+
+Running the Flask API
+
+```bash
+py .\app.py
+# If you want to run in debug mode
+py .\app.py --debug 
 ```

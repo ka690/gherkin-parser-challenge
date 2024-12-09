@@ -1,12 +1,11 @@
 from ply.yacc import yacc
+from Errors.ParsingError import ParsingError
 from Gherkin.GherkinLexer import GherkinLexer
-from Models.ASTNode import ASTNode
 
 # Parser for Gherkin
 class GherkinParser:
     def __init__(self, **kwargs):
         self.lexer = GherkinLexer(**kwargs)
-        # TODO: remove debug flag
         self.tokens = self.lexer.tokens
         self.parser = yacc(module=self, **kwargs)
 
@@ -20,7 +19,11 @@ class GherkinParser:
         '''
         feature : FEATURE TEXT scenarios
         '''
-        p[0] = ASTNode(type='FEATURE', value=p[2], children=p[3])
+        p[0] = {
+            "Type" : 'FEATURE', 
+            "Value" : p[2].strip(), # Remove whitespace
+            "Children" : p[3],
+        }
 
     def p_scenarios_multiple(self, p):
         '''
@@ -39,7 +42,11 @@ class GherkinParser:
         '''
         scenario : SCENARIO TEXT steps
         '''
-        p[0] = ASTNode(type='SCENARIO', value=p[2], children=p[3])
+        p[0] = {
+            "Type" : 'SCENARIO', 
+            "Value" : p[2].strip(), # Remove whitespace
+            "Children" : p[3],
+        }
 
     def p_steps_multiple(self, p):
         '''
@@ -60,13 +67,16 @@ class GherkinParser:
             | THEN TEXT
             | AND TEXT
         '''
-        p[0] = ASTNode(type='STEP:'+p[1].upper(), value=p[2])
+        p[0] = {
+            "Type" : 'STEP:'+p[1].upper(), 
+            "Value" : p[2].strip(), # Remove whitespace
+        }
     
     def p_error(self, p):
-        raise Exception(f'Syntax error at {p.value!r} at line: {p.lineno}')
+        raise ParsingError(f'Syntax error at {p.value!r} at line: {p.lineno}')
     
-    # def parse(self, data):
-    #     return self.parser.parse(data)
+    def parse(self, data):
+        return self.parser.parse(data)
 
     # Test it output
     def test(self, data):
