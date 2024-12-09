@@ -53,7 +53,13 @@ To use the program, it is expected to pass a .txt file over an HTTP endpoint, pa
 Clone repository:
 
 ```bash
-git clone TODO
+git clone https://github.com/ka690/gherkin-parser-challenge.git
+```
+
+Change directory into 'gherkin-parser-challenge'
+
+```bash
+cd gherkin-parser-challenge
 ```
 
 Create a virtual environment and install all the dependencies:
@@ -64,6 +70,8 @@ py -m venv .venv
 pip install -r requirements.txt
 ```
 
+## Running application
+
 Running the Flask API
 
 ```bash
@@ -71,3 +79,19 @@ py .\app.py
 # If you want to run in debug mode
 py .\app.py --debug 
 ```
+
+## Using Postman colleciton
+
+There is a Postman collection included with the project with example requests.
+File: `Gherkin Parser API.postman_collection.json`
+
+This file can be imported into Postman by following these steps: [Import data into Postman](https://learning.postman.com/docs/getting-started/importing-and-exporting/importing-data/)
+
+To get the file upload parsing endpoint `/gherkin/parse/upload` to work you will need to choose the `test.feature` file that has been provided with the code, or use your own `.feature` file.
+
+Steps:
+
+1. Navigate to Request `/gherkin/parse/upload`.
+1. Navigate to 'Body' Tab Remove 'file' value.
+1. Select 'New file from local machine'.
+1. Choose feature file.
